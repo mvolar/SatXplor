@@ -1,0 +1,7 @@
+/env
+__pycache__/
+/test
+/trash
+/results
+/input.fasta
+/sats.fasta
