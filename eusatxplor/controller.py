@@ -151,9 +151,9 @@ def run_density_plots():
     if result.returncode == 0:
         pass
     else:
-        logger.warning(f"Error. Return code:{ result.returncode}")
-        logger.warning("STDERR:\n", result.stderr)
-        quit()
+        #this is an optional output, if error, continue normaly
+        logger.warning(f"Error with density plots. Return code:{ result.returncode}")
+        
     
 
 def run_extract_naive():
@@ -214,9 +214,7 @@ def run_mafft():
     if result.returncode == 0:
         pass
     else:
-        logger.warning(f"Error. Return code:{ result.returncode}")
-        print("STDERR:\n", result.stderr)
-        quit()
+        logger.warning(f"Error. Return code:{ result.returncode}. Error in running MAFFT for some sequences. ")
 
 def run_pca():
     search_string = 'monomers_aligned'
@@ -272,9 +270,9 @@ def main():
                 run_kmer_edge_finder,
                 run_rust_output_processing,
                 run_mafft,
+                run_flanks,
                 run_pca,
                 run_networks,
-                run_flanks,
                 run_microhomology]
     
     for i in range(starting_id,len(checkpoints)+2):

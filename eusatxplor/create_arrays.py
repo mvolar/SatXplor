@@ -113,75 +113,77 @@ if __name__ == '__main__':
 
     # Iterate through groups
     for group_key, group_df in grouped:
-
-        logger.info(f"Lengths of group {group_key[0]} is {len(group_df)}")
-    
-
-        monomer_len = group_df.select("max_len").row(0)[0]
-
-        tmp_df = group_df.filter(
-        ((pl.col("distance")<constants.MAX_PLOT_LEN) & (pl.col("distance")>-10)) 
-    )
-
-    # Create a histogram using Plotly Express
-        plot = (ggplot(tmp_df, aes(x='distance')) +
-            geom_histogram(alpha=0.7,binwidth=constants.HISTOGRAM_BIN_WIDTH,color="black",
-                           fill="#e5c8d6") +
-            ggtitle(group_key[0]) +
-            theme_bw() 
-        )
-        plot.save(f"results/pictures/{group_key[0]}_HOR.png",verbose=False)
-
-
-
-        query_len = group_df.select(pl.col("q_end")).max().to_series()
-        query_count = group_df.shape[0]
-        # Find peaks
-
-        data = (group_df
-                .filter(pl.col("distance")<constants.MAX_PLOT_LEN)
-                .select(pl.col("distance"))
-                .to_series())
-        bin_length = 100
-        bins = np.arange(0, np.nanmax(data) + bin_length, bin_length)
-        hist, edges = np.histogram(data, bins=bins)
-
-
-        # Create a Pandas Series with counts
-        counts_series = pd.Series(hist, index=bins[1:])
-        extension_factor = query_len[0]
         try:
-            logger.info(f"Finding peaks for {group_key}")
+            logger.info(f"Lengths of group {group_key[0]} is {len(group_df)}")
+        
 
-            x = (counts_series[counts_series>constants.ARRAY_HOR_PERC*query_count]).idxmax()
+            monomer_len = group_df.select("max_len").row(0)[0]
 
-            extension_factor = int(x) + query_len[0]
-        except:
-            logger.warning(f"No peaks were found for {group_key}, setting default extension factor")
-
-        logger.info(f"Extension factor for {group_key} is {extension_factor}")
-        ef_list.append(extension_factor)
-        name_list.append(group_key[0])
-
-        group_df = group_df.with_columns(
-        new_end = pl.col("new_end") + extension_factor
-    )
-
-        df_overlapped = group_df.group_by('subject','query').map_groups(find_and_group_overlapping)
-        df_overlapped = df_overlapped.with_columns(
-            end=pl.col("end")-extension_factor
+            tmp_df = group_df.filter(
+            ((pl.col("distance")<constants.MAX_PLOT_LEN) & (pl.col("distance")>-10)) 
         )
 
-        logger.info(f"Number of arrays before filtering: {len(df_overlapped)}")
+        # Create a histogram using Plotly Express
+            plot = (ggplot(tmp_df, aes(x='distance')) +
+                geom_histogram(alpha=0.7,binwidth=constants.HISTOGRAM_BIN_WIDTH,color="black",
+                            fill="#e5c8d6") +
+                ggtitle(group_key[0]) +
+                theme_bw() 
+            )
+            plot.save(f"results/pictures/{group_key[0]}_HOR.png",verbose=False)
 
-        df_overlapped = df_overlapped.filter(
-        (pl.col("end") - pl.col("start") > constants.MONOMER_NUMBER*monomer_len)
-    )
-        
-        logger.info(f"Number of arrays after filtering: {len(df_overlapped)}")
 
 
-        df_list.append(df_overlapped)
+            query_len = group_df.select(pl.col("q_end")).max().to_series()
+            query_count = group_df.shape[0]
+            # Find peaks
+
+            data = (group_df
+                    .filter(pl.col("distance")<constants.MAX_PLOT_LEN)
+                    .select(pl.col("distance"))
+                    .to_series())
+            bin_length = 100
+            bins = np.arange(0, np.nanmax(data) + bin_length, bin_length)
+            hist, edges = np.histogram(data, bins=bins)
+
+
+            # Create a Pandas Series with counts
+            counts_series = pd.Series(hist, index=bins[1:])
+            extension_factor = query_len[0]
+            try:
+                logger.info(f"Finding peaks for {group_key}")
+
+                x = (counts_series[counts_series>constants.ARRAY_HOR_PERC*query_count]).idxmax()
+
+                extension_factor = int(x) + query_len[0]
+            except:
+                logger.warning(f"No peaks were found for {group_key}, setting default extension factor")
+
+            logger.info(f"Extension factor for {group_key} is {extension_factor}")
+            ef_list.append(extension_factor)
+            name_list.append(group_key[0])
+
+            group_df = group_df.with_columns(
+            new_end = pl.col("new_end") + extension_factor
+        )
+
+            df_overlapped = group_df.group_by('subject','query').map_groups(find_and_group_overlapping)
+            df_overlapped = df_overlapped.with_columns(
+                end=pl.col("end")-extension_factor
+            )
+
+            logger.info(f"Number of arrays before filtering: {len(df_overlapped)}")
+
+            df_overlapped = df_overlapped.filter(
+            (pl.col("end") - pl.col("start") > constants.MONOMER_NUMBER*monomer_len)
+        )
+            
+            logger.info(f"Number of arrays after filtering: {len(df_overlapped)}")
+
+
+            df_list.append(df_overlapped)
+        except:
+            logger.warning(f"Error creating arrays for {group_key[0]}")
 
     data_dict = dict(zip(name_list,
                         ef_list))

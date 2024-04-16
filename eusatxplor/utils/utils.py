@@ -2,6 +2,7 @@ import polars as pl
 from Bio.SeqRecord import SeqRecord
 from Bio.Seq import Seq
 import os
+import utils.constants as constants
 
 
 def read_blast_output(file_path):
@@ -44,7 +45,7 @@ def convert_df_to_gff(df):
 
 
 # Function to extract subsequences based on start and end positions
-def extract_subsequences(records, df:pl.DataFrame,flanks="none",flank_size=0) -> list[SeqRecord]:
+def extract_subsequences(records, df:pl.DataFrame,flanks="none",flank_size=0, squish_arrays: bool=False) -> list[SeqRecord]:
     result_records: list = []
 
     for row in df.rows(named=True):
@@ -66,20 +67,29 @@ def extract_subsequences(records, df:pl.DataFrame,flanks="none",flank_size=0) ->
             start: int = row['start'] 
             end: int = row['end'] 
 
+        if squish_arrays:
+            for record in records:
+                if record.id == header:
+                    subsequence = record.seq[start:end]
+                    sequence_length = len(subsequence)
+                    id_string: str = prefix +  str(row["seqnames"])+ "_" + str(row["feature"])+"_" + str(row["start"]) + "_" +  str(row["end"])
+                    if sequence_length > 5000:
+                        merged_sequence = subsequence[:constants.SQUISH_LEN] + subsequence[-constants.SQUISH_LEN:]
+                        result_records.append(SeqRecord(merged_sequence, id=id_string, description=''))
+                    else:
+                        result_records.append(SeqRecord(subsequence, id=id_string, description=''))
 
-        for record in records:
-            if record.id == header:
-                subsequence = record.seq[start:end]
-                if len(subsequence)==0:
-                    continue
-                #testing purposes
-                if len(subsequence)>50000:
-                    #logger.info("skipping")
-                    continue
-                id_string: str = prefix +  str(row["seqnames"])+ "_" + str(row["feature"])+"_" + str(row["start"])
-                result_records.append(SeqRecord(subsequence, id=id_string, description=''))
-
-    return result_records
+        
+        
+        else :
+            for record in records:
+                if record.id == header:
+                    subsequence = record.seq[start:end]
+                    id_string: str = prefix +  str(row["seqnames"])+ "_" + str(row["feature"])+"_" + str(row["start"])
+                    result_records.append(SeqRecord(subsequence, id=id_string, description=''))
+                    
+    filtered_seq_records = [record for record in result_records if len(record.seq) > 0]
+    return filtered_seq_records
 
 
 def get_files_containing_string(directory, search_string):
@@ -95,4 +105,3 @@ def get_files_containing_string(directory, search_string):
 
     return matching_files
 
-# Replace 'your_directory_path' with the actual path you want to search in

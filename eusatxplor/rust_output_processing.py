@@ -26,6 +26,39 @@ def extract_array_flanks(df: pl.DataFrame,fasta_records: list,
         output_file = constants.FLANKS_SAVE_ROOT + group_key[0] + "_"+ flank_type +".fasta"
         SeqIO.write(left_flanks, output_file, 'fasta')
 
+def load_in_df_from_list_of_files(file_list: list,squish=False):
+    
+    df_list = []
+
+    if squish:
+        for i in file_list:
+            name = i.split("/")[-1]
+            name = name[:-4]
+            name = name.split("_")[0:4]
+            name = "_".join(name)
+            tmp = pl.read_csv(i,dtypes={"index":int,
+            "actual":float,
+            "roll_mean":float},separator="\t")
+            tmp = tmp.with_columns(
+                name = pl.lit(name)
+            )
+            print(tmp)
+            df_list.append(tmp)
+    else: 
+        for i in file_list:
+            name = i.split("/")[-1]
+            name = name[:-4]
+            name = name.split("_")[0:3]
+            name = "_".join(name)
+            tmp = pl.read_csv(i,dtypes={"index":int,
+            "actual":float,
+            "roll_mean":float},separator="\t")
+            tmp = tmp.with_columns(
+                name = pl.lit(name)
+            )
+            df_list.append(tmp)
+    return df_list
+
 if __name__=="__main__":
     
     parser = argparse.ArgumentParser(description='')
@@ -43,20 +76,7 @@ if __name__=="__main__":
 
     file_list = [constants.KMER_ANALYSIS_OUT + "data/" + string for string in file_list]
 
-    df_list = []
-        
-    for i in file_list:
-        name = i.split("/")[-1]
-        name = name[:-4]
-        name = name.split("_")[0:3]
-        name = "_".join(name)
-        tmp = pl.read_csv(i,dtypes={"index":int,
-        "actual":float,
-        "roll_mean":float},separator="\t")
-        tmp = tmp.with_columns(
-            name = pl.lit(name)
-        )
-        df_list.append(tmp)
+    df_list = load_in_df_from_list_of_files(file_list=file_list,squish=constants.SQUISH)
 
     #find the min max values by unique array name in the filtered data
     df_tot = pl.concat(df_list).filter(
@@ -101,38 +121,73 @@ if __name__=="__main__":
     df = read_gff_output(constants.ARRAYS_OUT_PATH,headers=False)
 
     df_real_edges = df_tot
+    if constants.SQUISH:
+        df = df.with_columns(
+            name = pl.col("seqnames")+"_" + pl.col("group") +"_" + pl.col("start").cast(pl.String)+"_" + pl.col("end").cast(pl.String)
+        ).with_columns(
+            len= pl.col("end") -pl.col("start")
+        )
 
-    df = df.with_columns(
-        name = pl.col("seqnames")+"_" + pl.col("group") +"_" + pl.col("start").cast(pl.String)
-    )
 
-    df = (df.join(df_real_edges,left_on="name",right_on="seqnames")
-    .with_columns(
-        real_start=pl.col("start") - (500-pl.col("start_right")))
-    .with_columns(
-        real_end=pl.col("end_right") - pl.col("start_right") + pl.col("real_start")
-    )
-    .select(
-            ["seqnames","source","feature","real_start","real_end","score","strand","frame","group"]
-    )
-    .rename(
-        {
-            "real_start" : "start",
-            "real_end" :"end"
-        }
-    )
-    )
-    
-    df.write_csv(constants.KMER_ANALYSIS_OUT + "real_edges_in_genome.tsv",include_header=False,separator="\t")
-    
-    
-    logger.info("Extracted the real flanks")
-    
-    extract_array_flanks(df=df,fasta_records=fasta_records)
+        df = df.join(df_real_edges,left_on="name",right_on="seqnames")
 
-    logger.info("Extracted the microhomology regions")
-    extract_array_flanks(df=df,fasta_records=fasta_records,
-                         flank_size=20,flank_type="microhomology")
+        df = df.with_columns(
+            real_start=pl.col("start") - (500-pl.col("start_right"))).with_columns(
+            real_end=pl.when(pl.col("len")<5000)
+                        .then(pl.col("end_right") - pl.col("start_right") + pl.col("real_start")) 
+                        .otherwise(pl.col("end") + (5000-pl.col("end_right")))
+        ).select(
+                ["seqnames","source","feature","real_start","real_end","score","strand","frame","group"]
+        ).rename(
+            {
+                "real_start" : "start",
+                "real_end" :"end"
+            }
+        )
+        
+        df.write_csv(constants.KMER_ANALYSIS_OUT + "real_edges_in_genome.tsv",include_header=False,separator="\t")
+        
+        
+        logger.info("Extracted the real flanks")
+        
+        extract_array_flanks(df=df,fasta_records=fasta_records)
+
+        logger.info("Extracted the microhomology regions")
+        extract_array_flanks(df=df,fasta_records=fasta_records,
+                            flank_size=20,flank_type="microhomology")
+    
+    else: 
+        df = df.with_columns(
+            name = pl.col("seqnames")+"_" + pl.col("group") +"_" + pl.col("start").cast(pl.String)
+        )
+
+        df = (df.join(df_real_edges,left_on="name",right_on="seqnames")
+        .with_columns(
+            real_start=pl.col("start") - (500-pl.col("start_right")))
+        .with_columns(
+            real_end=pl.col("end_right") - pl.col("start_right") + pl.col("real_start")
+        )
+        .select(
+                ["seqnames","source","feature","real_start","real_end","score","strand","frame","group"]
+        )
+        .rename(
+            {
+                "real_start" : "start",
+                "real_end" :"end"
+            }
+        )
+        )
+        
+        df.write_csv(constants.KMER_ANALYSIS_OUT + "real_edges_in_genome.tsv",include_header=False,separator="\t")
+        
+        
+        logger.info("Extracted the real flanks")
+        
+        extract_array_flanks(df=df,fasta_records=fasta_records)
+
+        logger.info("Extracted the microhomology regions")
+        extract_array_flanks(df=df,fasta_records=fasta_records,
+                            flank_size=20,flank_type="microhomology")
 
 
 

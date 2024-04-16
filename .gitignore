@@ -5,3 +5,4 @@ __pycache__/
 /results
 /input.fasta
 /sats.fasta
+/checkpoint.tsv

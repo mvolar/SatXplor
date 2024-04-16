@@ -33,7 +33,7 @@ def extract_extended_arrays(file_path: str,fasta_records: list) -> None:
 
     # Extract subsequences from FASTA records based on polars DataFrame
         subsequence_records = extract_subsequences(fasta_records, group_df,
-        flanks="both",flank_size=500)
+        flanks="both",flank_size=500,squish_arrays=constants.SQUISH)
 
 # Write the subsequences to a new FASTA file
         output_file = constants.SEQ_SAVE_PATH + group_key[0] + "_extended_arrays.fasta"
