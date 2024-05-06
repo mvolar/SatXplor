@@ -135,7 +135,7 @@ if __name__=="__main__":
             real_start=pl.col("start") - (500-pl.col("start_right"))).with_columns(
             real_end=pl.when(pl.col("len")<5000)
                         .then(pl.col("end_right") - pl.col("start_right") + pl.col("real_start")) 
-                        .otherwise(pl.col("end") + (5000-pl.col("end_right")))
+                        .otherwise(pl.col("end") - (4500-pl.col("end_right")))
         ).select(
                 ["seqnames","source","feature","real_start","real_end","score","strand","frame","group"]
         ).rename(
@@ -145,7 +145,7 @@ if __name__=="__main__":
             }
         )
         
-        df.write_csv(constants.KMER_ANALYSIS_OUT + "real_edges_in_genome.tsv",include_header=False,separator="\t")
+        df.write_csv(constants.KMER_ANALYSIS_OUT + "real_edges_in_genome.gff",include_header=False,separator="\t")
         
         
         logger.info("Extracted the real flanks")
@@ -178,7 +178,7 @@ if __name__=="__main__":
         )
         )
         
-        df.write_csv(constants.KMER_ANALYSIS_OUT + "real_edges_in_genome.tsv",include_header=False,separator="\t")
+        df.write_csv(constants.KMER_ANALYSIS_OUT + "real_edges_in_genome.gff",include_header=False,separator="\t")
         
         
         logger.info("Extracted the real flanks")

@@ -43,5 +43,5 @@ for group_key, group_df in grouped:
         plt.ylabel('Percentage identity')
         plt.savefig(constants.PIC_SAVE_ROOT + str(group_key[0]) + "_density.png")
         plt.clf()
-    except:
-        logger.warn(f"Error with density plots of {group_key[0]} most likely due to low number of monomers in KDE approximation, this is a non essential error, but we suggest closer examination of the satDNA in question.")
+    except Exception as e:
+        logger.warn(f"Error with density plots of {group_key[0]} most likely due to low number of monomers in KDE approximation, this is a non essential error, but we suggest closer examination of the satDNA in question. {e}")

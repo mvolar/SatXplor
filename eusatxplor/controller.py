@@ -87,11 +87,6 @@ def initialize_preprocess_blast():
     os.makedirs(constants.NETWORKS_SAVE_ROOT)
     os.makedirs(constants.MICROHOMOLOGY_SAVE_ROOT)
     
-    # Create 'tmp' folder
-    tmp_folder = './tmp'
-    if os.path.exists(tmp_folder):
-        shutil.rmtree(tmp_folder)
-    os.makedirs(tmp_folder)
     logger.info('Data deleted and folders created.')
 
     logger.info(
@@ -106,8 +101,7 @@ def initialize_preprocess_blast():
     output_file = config["SAT_FASTA_PATH"]
     
     
-    logger.info(
-        f"Sanitizing input names")
+    logger.info("Sanitizing input names")
     
     sanitize_and_filter_sequences(input_file, output_file,min_length=0)
 
@@ -247,7 +241,7 @@ def main():
     
     if os.path.exists(config["FINAL_RESULTS_DIR"]):
         logger.info("The output folder already exists")
-        if config["OVERWRITE"] == False:
+        if not config["OVERWRITE"]:
 
             logger.error(f"Destination folder '{config[ 'FINAL_RESULTS_DIR' ] }' already exists. but OVERWRITE is off. Exiting the application .")
         else: 

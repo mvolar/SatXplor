@@ -1,4 +1,3 @@
-import polars as pl
 from Bio import SeqIO
 import argparse
 import utils.utils as utils
@@ -79,7 +78,7 @@ if __name__=="__main__":
     args = parser.parse_args()
 
     fasta_file = args.genome_path
-    logger.info(f"Reading in the genome")
+    logger.info("Reading in the genome")
     fasta_records = list(SeqIO.parse(fasta_file, 'fasta'))
     logger.info(f"Extracting monomers from {constants.BLAST_GFF_PATH}")
     extract_monomers(constants.BLAST_GFF_PATH,fasta_records)

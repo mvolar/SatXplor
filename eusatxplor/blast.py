@@ -3,9 +3,7 @@ import argparse
 import os
 import glob
 import utils.constants
-from logging_config import logger
 
-import sys
 
 
 
@@ -48,7 +46,7 @@ def blast_sequences():
     args = parser.parse_args()
     print(args)
 
-    database = create_blast_database(args.genome_path)
+    create_blast_database(args.genome_path)
     run_blast(args.sat_path, args.genome_path, utils.constants.BLAST_OUT_PATH,10)
     cleanup_database_files(args.genome_path)
         

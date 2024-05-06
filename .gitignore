@@ -6,3 +6,5 @@ __pycache__/
 /input.fasta
 /sats.fasta
 /checkpoint.tsv
+/mare_full_sats
+*.fasta

@@ -1,13 +1,10 @@
 import numpy as np
 import polars as pl
 from plotnine import ggplot, aes, geom_histogram, ggtitle, theme_bw
-import pyranges as pr
 import pandas as pd
-from scipy.signal import find_peaks
 import json
 import utils.constants as constants
 from utils.utils import read_blast_output, convert_df_to_gff
-
 from logging_config import logger
 
 
@@ -91,7 +88,7 @@ if __name__ == '__main__':
     ef_list = []
     name_list = []
     df_list = []
-
+    pl.Config.set_tbl_rows(500)
     logger.info("Monomer statistics:")
     summary_stats = (
     df.group_by("query")
@@ -156,9 +153,9 @@ if __name__ == '__main__':
                 x = (counts_series[counts_series>constants.ARRAY_HOR_PERC*query_count]).idxmax()
 
                 extension_factor = int(x) + query_len[0]
-            except:
-                logger.warning(f"No peaks were found for {group_key}, setting default extension factor")
-
+            except Exception as e:
+                logger.warning(f"No peaks were found for {group_key}, setting default extension factor, reported error {e}")
+                
             logger.info(f"Extension factor for {group_key} is {extension_factor}")
             ef_list.append(extension_factor)
             name_list.append(group_key[0])
@@ -182,8 +179,8 @@ if __name__ == '__main__':
 
 
             df_list.append(df_overlapped)
-        except:
-            logger.warning(f"Error creating arrays for {group_key[0]}")
+        except Exception as e:
+            logger.warning(f"Error creating arrays for {group_key[0]} error message: {e}")
 
     data_dict = dict(zip(name_list,
                         ef_list))
@@ -208,7 +205,8 @@ if __name__ == '__main__':
     logger.info(f"Arrays written to {constants.ARRAYS_OUT_PATH}")
     logger.info(f"Unfiltered monomer annots written to {constants.BLAST_GFF_PATH}")
 
-    logger.info(f"Array statistics:")
+    logger.info("Array statistics:")
+    
     print(
         (out_table
         .with_columns(

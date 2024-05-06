@@ -1,6 +1,5 @@
 import polars as pl
 from Bio.SeqRecord import SeqRecord
-from Bio.Seq import Seq
 import os
 import utils.constants as constants
 

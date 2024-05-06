@@ -2,23 +2,15 @@
 
 install_packages_if_not_installed <- function(package_names) {
   for (package in package_names) {
-    if (requireNamespace(package, quietly = TRUE)) {
-      cat(paste("Package '", package, "' is already installed.\n"))
+    if (!requireNamespace(package, quietly = TRUE)) {
+      cat(paste("Installing package '", package, "'.\n"))
+      install.packages(package, dependencies = TRUE)
+      library(package, character.only = TRUE)
     } else {
-      cat(paste("Package '", package, "' is not installed.
-       Install package? (yes|no).\n"))
-      user_input <- scan(what = character(), n = 1, quiet = TRUE)
-      
-      if (user_input == "yes") {
-        install.packages(package)
-        library(package, character.only = TRUE)
-      } else {
-        cat(paste("Skipping installation of '", package, "'.\n"))
-      }
+      cat(paste("Package '", package, "' is already installed.\n"))
     }
   }
 }
-
 
 
 

@@ -1,8 +1,8 @@
 {
-    "INPUT_GENOME_PATH": "/mnt/o/eusatxplor/Meloidogyne incognita/Mare_v4_genome.fasta",
+    "INPUT_GENOME_PATH": "./testing_data/test_sequence.fasta",
     "GENOME_PATH": "./input.fasta",
-	"SAT_RAW": "/mnt/o/eusatxplor/Meloidogyne incognita/full_sats.fasta",
+	"SAT_RAW": "./testing_data/test_sats.fasta",
     "SAT_FASTA_PATH": "./sats.fasta",
-    "FINAL_RESULTS_DIR": "./mare_full_sats",
+    "FINAL_RESULTS_DIR": "./tests",
     "OVERWRITE": true
 }
