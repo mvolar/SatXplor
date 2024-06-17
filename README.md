@@ -13,7 +13,7 @@ A satDNA analysis pipeline.
 
 ## Prerequisites
 
-EuSatXplor is configured to run on any Linux system. However there are a couple of dependencies that need to be installed before successful running of the pipeline.
+SatXplor is configured to run on any Linux system. However there are a couple of dependencies that need to be installed before successful running of the pipeline.
 
 0. Linux distribution
 1. NCBI Blast
@@ -24,7 +24,7 @@ EuSatXplor is configured to run on any Linux system. However there are a couple 
 
 ## Installation
 
-Since EuSatXplor is a compilation of over 10 individual scripts, and a  Rust binary, the most elegant way of distributing and running EuSatXplor is by directly clonning the repository.
+Since SatXplor is a compilation of over 10 individual scripts, and a  Rust binary, the most elegant way of distributing and running EuSatXplor is by directly clonning the repository.
 
 1. Clone the repository:
 
@@ -55,7 +55,7 @@ Since EuSatXplor is a compilation of over 10 individual scripts, and a  Rust bin
 
     Since R package manager is a bit tricky on linux go the R source files folder and open up your R session
     ```
-    cd /eusatxplor/r/
+    cd /satxplor/r/
     R
     ```
     Then run:
@@ -72,7 +72,7 @@ Since EuSatXplor is a compilation of over 10 individual scripts, and a  Rust bin
 
 ## Usage
 
-Running EuSatXplor is simple, you just edit the `run_config.json` file:
+Running SatXplor is simple, you just edit the `run_config.json` file:
 
 ```json
 {
@@ -95,7 +95,7 @@ To check if everything is installed correctly run the following scripts. The scr
 python tests/tests.py
 ```
 
-EuSatXplor also ships whith a small testing sample to see if everything runs normally:
+SatXplor also ships whith a small testing sample to see if everything runs normally:
 
 ```
 python eusatxplor/run_all_tests.py
