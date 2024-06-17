@@ -29,13 +29,13 @@ Since SatXplor is a compilation of over 10 individual scripts, and a  Rust binar
 1. Clone the repository:
 
     ```bash
-    git clone https://github.com/mvolar/EuSatXplor.git
+    git clone https://github.com/mvolar/SatXplor.git
     ```
 
 2. Navigate to the project directory:
 
     ```bash
-    cd EuSatXplor
+    cd SatXplor
     ```
 
 3. Create and activate a virtual environment (optional but HIGHLY recommended):
@@ -85,7 +85,7 @@ Running SatXplor is simple, you just edit the `run_config.json` file:
 }
 ```
 
-And just run the main `controller.py` file which then runs and outputs the results in the `FINAL_RESULTS_DIR` and `EuSatXplor/results`.
+And just run the main `controller.py` file which then runs and outputs the results in the `FINAL_RESULTS_DIR` and `SatXplor/results`.
 
 
 ## Tests
