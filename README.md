@@ -1,4 +1,4 @@
-# EuSatXplor
+# SatXplor
 
 A satDNA analysis pipeline.
 
