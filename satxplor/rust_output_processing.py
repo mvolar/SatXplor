@@ -42,7 +42,7 @@ def load_in_df_from_list_of_files(file_list: list,squish=False):
             tmp = tmp.with_columns(
                 name = pl.lit(name)
             )
-            print(tmp)
+            
             df_list.append(tmp)
     else: 
         for i in file_list:

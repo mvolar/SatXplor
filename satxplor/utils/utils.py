@@ -2,7 +2,7 @@ import polars as pl
 from Bio.SeqRecord import SeqRecord
 import os
 import utils.constants as constants
-
+import shutil
 
 def read_blast_output(file_path):
     # Read the BLAST output file into a DataFrame
@@ -104,3 +104,8 @@ def get_files_containing_string(directory, search_string):
 
     return matching_files
 
+def move_file(src, dst):
+    try:
+        shutil.move(src, dst)
+    except Exception as e:
+        print(f"Error: Failed to move file '{src}' to '{dst}': {e}")

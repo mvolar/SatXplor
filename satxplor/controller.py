@@ -15,6 +15,7 @@ from r_script_runners import (run_pca_script,
 import json
 from preprocess import sanitize_and_filter_sequences
 
+
 with open("run_config.json", "r") as f:
     config = json.load(f)
 checkpoints = ["nothing",
@@ -243,7 +244,7 @@ def main():
         logger.info("The output folder already exists")
         if not config["OVERWRITE"]:
 
-            logger.error(f"Destination folder '{config[ 'FINAL_RESULTS_DIR' ] }' already exists. but OVERWRITE is off. Exiting the application .")
+            logger.error(f"Destination folder '{config[ 'FINAL_RESULTS_DIR' ] }' already exists. but OVERWRITE is off. Exiting the application.")
         else: 
             logger.info("Since OVERWRITE is on, trying to delete the folder!")
             shutil.rmtree(config["FINAL_RESULTS_DIR"])
@@ -288,6 +289,8 @@ def main():
 
 # Copy the entire folder from source to destination
     shutil.copytree("./results", config["FINAL_RESULTS_DIR"])
+    utils.move_file(config["GENOME_PATH"],config['FINAL_RESULTS_DIR'])
+    utils.move_file(config["SAT_FASTA_PATH"],config['FINAL_RESULTS_DIR'])
     
 
 if __name__ == '__main__':

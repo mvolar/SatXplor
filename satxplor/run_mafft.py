@@ -50,7 +50,7 @@ def main():
             run_mafft(input_path, output_path)
             logger.info(f"Alignment completed for {input_path}. Output saved to {output_path}")
         except Exception as e:
-            logger.warn(f"Error in mafft for {input_file}, error message: {e}")
+            logger.warning(f"Error in mafft for {input_file}, error message: {e}")
         #list of input files for flank alignment
     input_files = [file for file in os.listdir(constants.FLANKS_SAVE_ROOT) if file.endswith("_flanks.fasta")]
     
@@ -65,7 +65,7 @@ def main():
             run_mafft(input_path, output_path)
             logger.info(f"Alignment completed for {input_path}. Output saved to {output_path}")
         except Exception as e:
-            logger.warn(f"Error in mafft for {input_file}, error message: {e}")
+            logger.warning(f"Error in mafft for {input_file}, error message: {e}")
     
 
 
@@ -82,7 +82,7 @@ def main():
             run_mafft(input_path, output_path)
             logger.info(f"Alignment completed for {input_path}. Output saved to {output_path}")
         except Exception as e:
-            logger.warn(f"Error in mafft for {input_file}, error message: {e}")
+            logger.warning(f"Error in mafft for {input_file}, error message: {e}")
 
 
 
