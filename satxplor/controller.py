@@ -109,7 +109,7 @@ def initialize_preprocess_blast():
 
     logger.info( f"Output sequences written to { config['GENOME_PATH'] }")
 
-    command = ['python3', './eusatxplor/blast.py',
+    command = ['python3', './satxplor/blast.py',
                config["SAT_FASTA_PATH"],
                config["GENOME_PATH"]
                ]
@@ -127,7 +127,7 @@ def initialize_preprocess_blast():
 def run_create_arrays_script():
     # Run the 'create_arrays.py' script
 
-    command = ['python3', './eusatxplor/create_arrays.py']
+    command = ['python3', './satxplor/create_arrays.py']
     
     result = subprocess.run(command)
     if result.returncode == 0:
@@ -140,7 +140,7 @@ def run_create_arrays_script():
 
 def run_density_plots():
     # Run the 'create_arrays.py' script
-    command = ['python3', './eusatxplor/density_plots.py']
+    command = ['python3', './satxplor/density_plots.py']
     
     result = subprocess.run(command)
     if result.returncode == 0:
@@ -153,7 +153,7 @@ def run_density_plots():
 
 def run_extract_naive():
     # Run the 'create_arrays.py' script
-    command = ['python3', './eusatxplor/extract_naive.py',
+    command = ['python3', './satxplor/extract_naive.py',
                config["GENOME_PATH"]]
     
     result = subprocess.run(command)
@@ -167,7 +167,7 @@ def run_extract_naive():
 def run_filename_mapping():
     # Run the 'create_arrays.py' script
 
-    command = ['python3', './eusatxplor/filename_mapping.py']
+    command = ['python3', './satxplor/filename_mapping.py']
     
     result = subprocess.run(command)
     if result.returncode == 0:
@@ -179,7 +179,7 @@ def run_filename_mapping():
 
 def run_kmer_edge_finder():
     # Run the 'create_arrays.py' script
-    command = ['./eusatxplor/executables/kmer_edge_finder']
+    command = ['./satxplor/executables/kmer_edge_finder']
     
     result = subprocess.run(command)
     if result.returncode == 0:
@@ -191,7 +191,7 @@ def run_kmer_edge_finder():
 
 def run_rust_output_processing():
     # Run the 'create_arrays.py' script
-    command = ['python', './eusatxplor/rust_output_processing.py',
+    command = ['python', './satxplor/rust_output_processing.py',
                               config["GENOME_PATH"]]
 
     result = subprocess.run(command)
@@ -204,7 +204,7 @@ def run_rust_output_processing():
 
 def run_mafft():
     # Run the 'create_arrays.py' script
-    command = ['python3', './eusatxplor/run_mafft.py']
+    command = ['python3', './satxplor/run_mafft.py']
     result = subprocess.run(command)
     if result.returncode == 0:
         pass

@@ -10,7 +10,8 @@ import_libraries <- function(library_names) {
       library(library_name, character.only = TRUE, quietly = TRUE)
       cat(paste("Library '", library_name, "' imported successfully.\n"))
     }, error = function(e) {
-      cat(paste("Error: Failed to import library '", library_name, "': ", conditionMessage(e), "\n", sep = ""))
+      cat(paste("Error: Failed to import library '", library_name,"'"))
+	  quit(status=1, save='no')
     })
   }
 }

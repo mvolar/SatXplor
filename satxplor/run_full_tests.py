@@ -25,7 +25,7 @@ if __name__ == "__main__":
     extract_dir = "testing_data/"
     run_config_src = "testing_data/run_config_test.json"
     run_config_dest = "run_config.json"
-    eusatxplor_script = "eusatxplor/controller.py"
+    eusatxplor_script = "satxplor/controller.py"
 
     try:
         logger.info("Extracting data.")

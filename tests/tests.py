@@ -14,12 +14,12 @@ def run_r_script(script_path):
     try:
         # Run the R script and capture both stdout and stderr
         result = subprocess.run(['Rscript', script_path], check=True, stdout=subprocess.PIPE, stderr=subprocess.PIPE)
-        print("R script executed successfully.")
+        print(f"R script executed successfully.")
         return True
     except subprocess.CalledProcessError as e:
         # Print the error message if the execution fails
         print("Error: Failed to execute the R script.")
-        print("Error message:", e.stderr.decode())
+        print("Error message:", e.stdout.decode())
         return False
 
 
