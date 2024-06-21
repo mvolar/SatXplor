@@ -24,7 +24,8 @@ SatXplor is configured to run on any Linux system. However there are a couple of
 
 ## Installation
 
-Since SatXplor is a compilation of over 10 individual scripts, and a  Rust binary, the most elegant way of distributing and running EuSatXplor is by directly clonning the repository.
+Since SatXplor is a compilation of over 10 individual scripts, and a Rust binary, the most elegant way of distributing and running EuSatXplor is by directly clonning the repository and installing the dependancies. 
+
 
 1. Clone the repository:
 
@@ -53,22 +54,49 @@ Since SatXplor is a compilation of over 10 individual scripts, and a  Rust binar
 
 5. Install R dependencies:
 
-    Since R package manager is a bit tricky on linux go the R source files folder and open up your R session
+    Since R package manager in linux requires compilation of many packages, the installation time for all can take up to 20 minutes. Thus it is best to create a conda/mamba virtual environment and use the precompiled R packages for your Linux distirbution:
+    
     ```
-    cd /satxplor/r/
-    R
-    ```
-    Then run:
+    mamba create -n myenv r-base=4.3.3 -c conda-forge -y 
 
-    ```{r}
-    source("install_packages.R")
+    mamba activate myenv
+
+    mamba install -c conda-forge r-biocmanager r-ggplot2 r-data.table r-dplyr r-umap r-stringr r-factominer r-ape r-optparse r-htmlwidgets r-igraph r-networkd3 r-circlize r-pheatmap r-scales bioconda::bioconductor-biostrings bioconda::bioconductor-complexheatmap  -y 
     ```
-    An R session installer will guide you. If there are errors during installation, most likely explanation is you are missing some developmental libraries of C/C++ (like cmake, libxml2), all of which R will let you know that you are missing (if you install R )will then have to be installed by:
+
+
+6. (Optional) Install both MAFFT and NCBI-BLAST through mamba:
 
     ```
-    sudo apt install "missing_lib"
+    mamba activate myenv
+    mamba install -c conda-forge -c bioconda mafft blast
     ```
-    After installing simply rerun the `R/source()` command and the installation of R packages will continue
+
+## Docker
+
+Alternative to the normal installation SatXplor also comes with a docker container:
+
+1. Pull the containter
+```
+docker pull mvolaric/satxplor
+```
+2. Run the interactive shell and mount your data directory to `/mnt/data`
+```
+docker run -it -v path/to/your/data_folder:/mnt/data satxplor
+```
+3. In the interactive shell setup your desired `run_config.json` by using the provided helper script `setup_docker_run.py`:
+
+```
+python satxplor/setup_docker_run.py --input_genome_path genome.fasta \
+--sat_raw satellites.fasta \
+--final_results_dir output_folder
+```
+
+4. Run the `controller.py` from the interactive shell. After the run the results should be visible in `/path/to/your/data_folder/output_folder` directory.
+
+```
+python satxplor/controller.py
+```
 
 ## Usage
 
@@ -87,6 +115,9 @@ Running SatXplor is simple, you just edit the `run_config.json` file:
 
 And just run the main `controller.py` file which then runs and outputs the results in the `FINAL_RESULTS_DIR` and `SatXplor/results`.
 
+```
+python satxplor/controller.py
+```
 
 ## Tests
 
@@ -98,7 +129,7 @@ python tests/tests.py
 SatXplor also ships whith a small testing sample to see if everything runs normally:
 
 ```
-python eusatxplor/run_all_tests.py
+python satxplor/run_all_tests.py
 ```
 which runs on the `testing_data/testing_data.tar.gz` files and produces the normal output of running EuSatXplor.
 
