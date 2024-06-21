@@ -98,6 +98,17 @@ python satxplor/setup_docker_run.py --input_genome_path genome.fasta \
 python satxplor/controller.py
 ```
 
+5. You can also run the tests after pulling the container, and then copy the data of the output to your directory:
+```
+docker run -it -v path/to/your/data_folder:/mnt/data satxplor
+
+python satxplor/run_full_tests.py
+
+#after the run has been completed to visually inspect it
+
+cp ./testing_data /mnt/data/
+```
+
 ## Usage
 
 Running SatXplor is simple, you just edit the `run_config.json` file:
