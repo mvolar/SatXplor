@@ -124,7 +124,7 @@ Running SatXplor is simple, you just edit the `run_config.json` file:
 }
 ```
 
-And just run the main `controller.py` file which then runs and outputs the results in the `FINAL_RESULTS_DIR` and `SatXplor/results`. Nothe that *both python env and mamba env need to be active*
+And just run the main `controller.py` file which then runs and outputs the results in the `FINAL_RESULTS_DIR` and `SatXplor/results`. Note that **both python env and mamba envirnoments need to be active**
 
 ```
 (mypyenv) (myenv) python satxplor/controller.py
