@@ -15,7 +15,7 @@ A satDNA analysis pipeline.
 
 SatXplor is configured to run on any Linux system. However there are a couple of dependencies that need to be installed before successful running of the pipeline.
 
-0. Linux distribution
+0. Linux distribution - supporting glibc>=2.32 (ubuntu 22+)
 1. NCBI Blast
 2. MAFFT multiple alignment 
 3. R and some R package dependacies: 
