@@ -14,8 +14,8 @@ def extract_tar_gz(archive_path, extract_dir):
 def copy_run_config(run_config_src, run_config_dest):
     shutil.copy2(run_config_src, run_config_dest)
 
-def run_eusatxplor(eusatxplor_script):
-    subprocess.run(['python', eusatxplor_script], check=True)
+def run_satxplor(satxplor_script):
+    subprocess.run(['python', satxplor_script], check=True)
 
 if __name__ == "__main__":
     logger.info("Setting up testing data environment.")
@@ -25,7 +25,7 @@ if __name__ == "__main__":
     extract_dir = "testing_data/"
     run_config_src = "testing_data/run_config_test.json"
     run_config_dest = "run_config.json"
-    eusatxplor_script = "satxplor/controller.py"
+    satxplor_script = "satxplor/controller.py"
 
     try:
         logger.info("Extracting data.")
@@ -37,6 +37,6 @@ if __name__ == "__main__":
 
         # Run eusatxplor.py
         logger.info("Starting the test run.")
-        run_eusatxplor(eusatxplor_script)
+        run_satxplor(satxplor_script)
     except Exception as e:
         print("An error occurred:", e)

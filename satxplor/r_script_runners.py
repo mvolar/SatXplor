@@ -6,7 +6,7 @@ import utils.utils as utils
 def run_pca_script(alignment):
 
     logger.info(f"Running PCA umap for {alignment}")
-    command = ['Rscript', './eusatxplor/r/pca_umap_plots.R',
+    command = ['Rscript', './satxplor/r/pca_umap_plots.R',
                     "-a", alignment,
                     "-d", constants.DIMENSION_RED_MODE,
                     "-o", constants.PCA_UMAP_SAVE_ROOT]
@@ -24,7 +24,7 @@ def run_pca_script(alignment):
 def run_networks_script(distance_matrix):
 
     logger.info(f"Running networks {distance_matrix}")
-    command = ['Rscript', './eusatxplor/r/network_plots.R',
+    command = ['Rscript', './satxplor/r/network_plots.R',
                     "-a", constants.ARRAYS_OUT_PATH,
                     "-m", distance_matrix,
                     "-k", "5",
@@ -41,7 +41,7 @@ def run_networks_script(distance_matrix):
 def run_flank_distances(flank_alignment):
 
     logger.info(f"Running flank alignment {flank_alignment}")
-    command = ['Rscript', './eusatxplor/r/distance_maps.R',
+    command = ['Rscript', './satxplor/r/distance_maps.R',
                     "-a", flank_alignment,
                     "-o", constants.DISTANCE_SAVE_ROOT]
     
@@ -60,7 +60,7 @@ def run_microhomology():
     print(matching_files)
     for mhl in matching_files:
         logger.info(f"Running flank alignment {mhl}")
-        command = ['Rscript', './eusatxplor/r/microhomology_analysis.R',
+        command = ['Rscript', './satxplor/r/microhomology_analysis.R',
                     "-a", mhl,
                     "-o", constants.MICROHOMOLOGY_SAVE_ROOT]
     
