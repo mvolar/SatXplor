@@ -142,5 +142,15 @@ SatXplor also ships whith a small testing sample to see if everything runs norma
 ```
 python satxplor/run_all_tests.py
 ```
-which runs on the `testing_data/testing_data.tar.gz` files and produces the normal output of running EuSatXplor.
+which runs on the `testing_data/testing_data.tar.gz` files and produces the normal output of running SatXplor.
 
+
+## Citing 
+
+If you use SatXplor please cite the following paper:
+
+```
+SatXplor – A comprehensive pipeline for satellite DNA analyses in complex genome assemblies
+Marin Volarić, Nevenka Meštrović, Evelin Despot-Slade
+bioRxiv 2024.08.09.607335; doi: https://doi.org/10.1101/2024.08.09.607335
+```
