@@ -71,6 +71,20 @@ Since SatXplor is a compilation of over 10 individual scripts, and a Rust binary
     mamba activate myenv
     mamba install -c conda-forge -c bioconda mafft blast
     ```
+7. If your running older versions of Linux systems You need to manually compile the new Rust binary on your older system by downloading Rust:
+
+```
+curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs | sh
+```
+
+Restart your shell then navigate to the `satxplor/satxplor/executables/` folder then:
+
+```
+cargo build --release
+cp /target/release/kmer_edge_finder ./
+```
+
+and application should run normally.
 
 ## Docker
 
