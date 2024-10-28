@@ -152,7 +152,7 @@ If you prefer to install and run SatXplor manually without Docker, follow the st
     cp /target/release/kmer_edge_finder ./
     ```
 
-## Tests and examples
+## Examples
 
 **Test Data Availability**
 
@@ -176,8 +176,10 @@ To verify that all dependencies are installed correctly and that the pipeline is
 ``` bash
 python tests/tests.py
 ```
-**Sample data run**
-Additionally, SatXplor includes a small testing sample to confirm that everything runs normally and to serve. You can execute the following command, which runs on the `testing_data/testing_data.tar.gz` files.
+
+**Example data run**
+
+Additionally, SatXplor includes a small testing sample to confirm that everything runs normally and to serve. You can execute the following command, which runs on the `testing_data/testing_data.tar.gz` files, extracting the `test_sequence.fasta` and 'test_sats.fasta', setting up the run settings and running SatXplor all in one command
 ```
 python satxplor/run_all_tests.py
 ```
