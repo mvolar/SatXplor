@@ -1,6 +1,7 @@
 import os
 import polars as pl
-import utils.constants as constants
+import utils.paths as paths
+from utils.constant_loader import constants as constants
 from utils.utils import read_gff_output, extract_subsequences
 from Bio import SeqIO
 import argparse
@@ -23,7 +24,7 @@ def extract_array_flanks(df: pl.DataFrame,fasta_records: list,
         left_flanks.extend(right_flanks)
         
         #Write the subsequences to a new FASTA file
-        output_file = constants.FLANKS_SAVE_ROOT + group_key[0] + "_"+ flank_type +".fasta"
+        output_file = paths.FLANKS_SAVE_ROOT + group_key[0] + "_"+ flank_type +".fasta"
         SeqIO.write(left_flanks, output_file, 'fasta')
 
 def load_in_df_from_list_of_files(file_list: list,squish=False):
@@ -71,10 +72,10 @@ if __name__=="__main__":
     logger.info("\n Loaded the fasta")
 
 
-    file_list = os.listdir(constants.KMER_ANALYSIS_OUT + "data")
+    file_list = os.listdir(paths.KMER_ANALYSIS_OUT + "data")
 
 
-    file_list = [constants.KMER_ANALYSIS_OUT + "data/" + string for string in file_list]
+    file_list = [paths.KMER_ANALYSIS_OUT + "data/" + string for string in file_list]
 
     df_list = load_in_df_from_list_of_files(file_list=file_list,squish=constants.SQUISH)
 
@@ -110,7 +111,7 @@ if __name__=="__main__":
                     ["seqnames","source","feature","start","end","score","strand","frame","group"]
         )
 
-    df_tot.write_csv(constants.KMER_ANALYSIS_OUT + "final_array_table_array_maps.tsv",
+    df_tot.write_csv(paths.KMER_ANALYSIS_OUT + "final_array_table_array_maps.tsv",
                     include_header=False,separator="\t")
     
     logger.info("Created the real edges annotations")
@@ -118,7 +119,7 @@ if __name__=="__main__":
 
     
     #read in the original arrays
-    df = read_gff_output(constants.ARRAYS_OUT_PATH,headers=False)
+    df = read_gff_output(paths.ARRAYS_OUT_PATH,headers=False)
 
     df_real_edges = df_tot
     if constants.SQUISH:
@@ -145,7 +146,7 @@ if __name__=="__main__":
             }
         )
         
-        df.write_csv(constants.KMER_ANALYSIS_OUT + "real_edges_in_genome.gff",include_header=False,separator="\t")
+        df.write_csv(paths.KMER_ANALYSIS_OUT + "real_edges_in_genome.gff",include_header=False,separator="\t")
         
         
         logger.info("Extracted the real flanks")
@@ -178,7 +179,7 @@ if __name__=="__main__":
         )
         )
         
-        df.write_csv(constants.KMER_ANALYSIS_OUT + "real_edges_in_genome.gff",include_header=False,separator="\t")
+        df.write_csv(paths.KMER_ANALYSIS_OUT + "real_edges_in_genome.gff",include_header=False,separator="\t")
         
         
         logger.info("Extracted the real flanks")

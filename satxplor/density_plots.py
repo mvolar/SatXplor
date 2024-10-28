@@ -2,12 +2,13 @@
 from utils.utils import read_blast_output
 from scipy.stats import gaussian_kde
 import polars as pl
-import utils.constants as constants
+import utils.paths as paths
+from utils.constant_loader import constants as constants
 import matplotlib.pyplot as plt
 import numpy as np
 from logging_config import logger
 
-df = read_blast_output(constants.BLAST_OUT_PATH)
+df = read_blast_output(paths.BLAST_OUT_PATH)
 
 
 
@@ -41,7 +42,7 @@ for group_key, group_df in grouped:
         plt.title(group_key[0])
         plt.xlabel('Query coverage')
         plt.ylabel('Percentage identity')
-        plt.savefig(constants.PIC_SAVE_ROOT + str(group_key[0]) + "_density.png")
+        plt.savefig(paths.PIC_SAVE_ROOT + str(group_key[0]) + "_density.png")
         plt.clf()
     except Exception as e:
         logger.warning(f"Error with density plots of {group_key[0]} most likely due to low number of monomers in KDE approximation, this is a non essential error, but we suggest closer examination of the satDNA in question. {e}")

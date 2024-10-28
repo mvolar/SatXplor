@@ -2,7 +2,7 @@ import subprocess
 import argparse
 import os
 import glob
-import utils.constants
+import utils.paths as paths
 
 
 
@@ -47,7 +47,7 @@ def blast_sequences():
     print(args)
 
     create_blast_database(args.genome_path)
-    run_blast(args.sat_path, args.genome_path, utils.constants.BLAST_OUT_PATH,10)
+    run_blast(args.sat_path, args.genome_path, paths.BLAST_OUT_PATH,10)
     cleanup_database_files(args.genome_path)
         
 

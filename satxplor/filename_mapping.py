@@ -1,6 +1,7 @@
 import os
 import json
-import utils.constants as constants
+import utils.paths as paths
+from utils.constant_loader import constants as constants
 
 from logging_config import logger
 def match_monomer_array_pairs(folder_path):
@@ -34,7 +35,7 @@ def write_to_json(data, json_file):
         json.dump(data, f, indent=2)
 
 def main():
-    folder_path = constants.SEQ_SAVE_PATH
+    folder_path = paths.SEQ_SAVE_PATH
     output_json_file = "pairs.json"
 
     pairs = match_monomer_array_pairs(folder_path)

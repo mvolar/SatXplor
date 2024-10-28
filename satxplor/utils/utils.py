@@ -1,7 +1,7 @@
 import polars as pl
 from Bio.SeqRecord import SeqRecord
 import os
-import utils.constants as constants
+from utils.constant_loader import constants 
 import shutil
 
 def read_blast_output(file_path):

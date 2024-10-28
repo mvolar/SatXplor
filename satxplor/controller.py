@@ -1,9 +1,10 @@
 import os
 import shutil
 import subprocess
-import utils.constants as constants
+from utils.constant_loader import constants as constants
 import utils.utils as utils
-
+import utils.paths as paths
+import argparse
 import sys
 from logging_config import logger
 from concurrent.futures import ProcessPoolExecutor
@@ -14,6 +15,33 @@ from r_script_runners import (run_pca_script,
                                   run_networks_script )
 import json
 from preprocess import sanitize_and_filter_sequences
+
+def save_constants(data):
+    with open('satxplor/utils/constants.json', 'w') as f:
+        json.dump(data, f, indent=4)
+
+def update_constants(args):
+    # Update constants with new values from command-line arguments (if provided)
+    constants = {
+        'MAX_PLOT_LEN': args.max_plot_len,
+        'HISTOGRAM_BIN_WIDTH': args.histogram_bin_width,
+        'NKERNEL_BINS': args.nkernel_bins,
+        'FLANK_SIZE': args.flank_size,
+        'ARRAY_HOR_PERC': args.array_hor_perc,
+        'MONOMER_NUMBER': args.monomer_number,
+        'CONTIG_FILTER': args.contig_filter,
+        'DIMENSION_RED_MODE': args.dimension_red_mode,
+        'PERC_ID_FILTER': args.perc_id_filter,
+        'QCOVHSP_FILTER': args.qcovhsp_filter,
+        'SQUISH': args.squish,
+        'SQUISH_LEN': args.squish_len
+    }
+
+    # Save updated constants back to constants.json
+    save_constants(constants)
+
+    # Print updated constants
+    print(f"Updated Constants:\n{json.dumps(constants, indent=4)}")
 
 
 with open("run_config.json", "r") as f:
@@ -74,19 +102,19 @@ def initialize_preprocess_blast():
     os.makedirs(results_folder)
 
     #data saving roots
-    os.makedirs(constants.DATA_SAVE_ROOT)
-    os.makedirs(constants.TABLE_SAVE_ROOT)
+    os.makedirs(paths.DATA_SAVE_ROOT)
+    os.makedirs(paths.TABLE_SAVE_ROOT)
 
     #sequence saving roots
-    os.makedirs(constants.SEQ_SAVE_PATH)
-    os.makedirs(constants.FLANKS_SAVE_ROOT)
+    os.makedirs(paths.SEQ_SAVE_PATH)
+    os.makedirs(paths.FLANKS_SAVE_ROOT)
 
     #picture saving roots
-    os.makedirs(constants.PIC_SAVE_ROOT)
-    os.makedirs(constants.PCA_UMAP_SAVE_ROOT)
-    os.makedirs(constants.DISTANCE_SAVE_ROOT)
-    os.makedirs(constants.NETWORKS_SAVE_ROOT)
-    os.makedirs(constants.MICROHOMOLOGY_SAVE_ROOT)
+    os.makedirs(paths.PIC_SAVE_ROOT)
+    os.makedirs(paths.PCA_UMAP_SAVE_ROOT)
+    os.makedirs(paths.DISTANCE_SAVE_ROOT)
+    os.makedirs(paths.NETWORKS_SAVE_ROOT)
+    os.makedirs(paths.MICROHOMOLOGY_SAVE_ROOT)
     
     logger.info('Data deleted and folders created.')
 
@@ -133,7 +161,6 @@ def run_create_arrays_script():
     if result.returncode == 0:
         pass
     else:
-        logger.warning(f"Error. Return code:{ result.returncode}")
         print("STDERR:\n", result.stderr)
         quit()
     
@@ -160,8 +187,7 @@ def run_extract_naive():
     if result.returncode == 0:
         pass
     else:
-        logger.warning(f"Error. Return code:{ result.returncode}")
-        logger.warning("STDERR:\n", result.stderr)
+        print("STDERR:\n", result.stderr)
         quit()
 
 def run_filename_mapping():
@@ -173,7 +199,6 @@ def run_filename_mapping():
     if result.returncode == 0:
         pass
     else:
-        logger.warning(f"Error. Return code:{ result.returncode}")
         print("STDERR:\n", result.stderr)
         quit()
 
@@ -185,7 +210,6 @@ def run_kmer_edge_finder():
     if result.returncode == 0:
         pass
     else:
-        logger.warning(f"Error. Return code:{ result.returncode}")
         print("STDERR:\n", result.stderr)
         quit()
 
@@ -198,7 +222,6 @@ def run_rust_output_processing():
     if result.returncode == 0:
         pass
     else:
-        logger.warning(f"Error. Return code:{ result.returncode}")
         print("STDERR:\n", result.stderr)
         quit()
 
@@ -213,14 +236,14 @@ def run_mafft():
 
 def run_pca():
     search_string = 'monomers_aligned'
-    matching_files = utils.get_files_containing_string(constants.SEQ_SAVE_PATH, search_string)
+    matching_files = utils.get_files_containing_string(paths.SEQ_SAVE_PATH, search_string)
 
     with ProcessPoolExecutor() as executor:
         executor.map(run_pca_script, matching_files)
     
 def run_networks():
     search_string = 'matrix.csv.gz'
-    matching_files = utils.get_files_containing_string(constants.PCA_UMAP_SAVE_ROOT, search_string)
+    matching_files = utils.get_files_containing_string(paths.PCA_UMAP_SAVE_ROOT, search_string)
 
     
     with ProcessPoolExecutor() as executor:
@@ -228,7 +251,7 @@ def run_networks():
 
 def run_flanks():
     search_string = 'flanks_aligned'
-    matching_files = utils.get_files_containing_string(constants.FLANKS_SAVE_ROOT, search_string)
+    matching_files = utils.get_files_containing_string(paths.FLANKS_SAVE_ROOT, search_string)
 
     with ProcessPoolExecutor() as executor:
         executor.map(run_flank_distances, matching_files)
@@ -255,6 +278,27 @@ def main():
     check_point = audit_checkpoints()
 
     starting_id = checkpoints.index(check_point)
+
+    parser = argparse.ArgumentParser(description='Update constants in constants.json')
+
+    # Hard-coded default values in argparse
+    parser.add_argument('--max_plot_len', type=int, default=5000, help='Maximum plot length')
+    parser.add_argument('--histogram_bin_width', type=int, default=50, help='Histogram bin width')
+    parser.add_argument('--nkernel_bins', type=int, default=100, help='Number of kernel bins')
+    parser.add_argument('--flank_size', type=int, default=500, help='Flank size')
+    parser.add_argument('--array_hor_perc', type=float, default=0.01, help='Array horizontal percentage')
+    parser.add_argument('--monomer_number', type=int, default=4, help='Monomer number')
+    parser.add_argument('--contig_filter', type=int, default=100000, help='Contig filter')
+    parser.add_argument('--dimension_red_mode', type=str, default='both', help='Dimension reduction mode')
+    parser.add_argument('--perc_id_filter', type=float, default=70.0, help='Percentage identity filter')
+    parser.add_argument('--qcovhsp_filter', type=float, default=70.0, help='Query coverage filter')
+    parser.add_argument('--squish', type=bool, default=True, help='Squish flag')
+    parser.add_argument('--squish_len', type=int, default=2500, help='Squish length')
+
+    args = parser.parse_args()
+
+    update_constants(args)
+
 
     logger.info("The output folder already exists")
     fun_list = [initialize_preprocess_blast,

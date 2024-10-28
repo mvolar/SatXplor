@@ -3,7 +3,8 @@ import polars as pl
 from plotnine import ggplot, aes, geom_histogram, ggtitle, theme_bw
 import pandas as pd
 import json
-import utils.constants as constants
+import utils.paths as paths
+from utils.constant_loader import constants as constants
 from utils.utils import read_blast_output, convert_df_to_gff
 from logging_config import logger
 
@@ -26,7 +27,7 @@ def find_and_group_overlapping(group):
     intervals.append((current_start, current_end))
     return pl.DataFrame({
         'seqnames': [group['subject'][0]] * len(intervals),
-        'source': ["EuSatXplor"] * len(intervals),
+        'source': ["SatXplor"] * len(intervals),
         'feature' : [group['query'][0]] * len(intervals),
         'start': [start for start, _ in intervals],
         'end': [end for _, end in intervals],
@@ -39,8 +40,8 @@ def find_and_group_overlapping(group):
 
 if __name__ == '__main__':
     
-    logger.info(f"Finding HORs in BLAST output: {constants.BLAST_OUT_PATH}")
-    df = read_blast_output(constants.BLAST_OUT_PATH)
+    logger.info(f"Finding HORs in BLAST output: {paths.BLAST_OUT_PATH}")
+    df = read_blast_output(paths.BLAST_OUT_PATH)
     df = df.with_columns(
         pl.when(df['s_start'] > df["s_end"]).then(df['s_end']).otherwise(df['s_start']).alias('new_start'),
         pl.when(df['s_start'] > df["s_end"]).then(df['s_start']).otherwise(df['s_end']).alias('new_end'),
@@ -197,13 +198,13 @@ if __name__ == '__main__':
 
 
     df = convert_df_to_gff(df)
-    df.write_csv(constants.BLAST_GFF_PATH, separator="\t",include_header=False )
+    df.write_csv(paths.BLAST_GFF_PATH, separator="\t",include_header=False )
     
 
-    out_table.write_csv(constants.ARRAYS_OUT_PATH, separator="\t",include_header=False)
+    out_table.write_csv(paths.ARRAYS_OUT_PATH, separator="\t",include_header=False)
     logger.info(f"Extenstion factors written {file_path}")
-    logger.info(f"Arrays written to {constants.ARRAYS_OUT_PATH}")
-    logger.info(f"Unfiltered monomer annots written to {constants.BLAST_GFF_PATH}")
+    logger.info(f"Arrays written to {paths.ARRAYS_OUT_PATH}")
+    logger.info(f"Unfiltered monomer annots written to {paths.BLAST_GFF_PATH}")
 
     logger.info("Array statistics:")
     

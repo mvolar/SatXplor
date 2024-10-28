@@ -8,4 +8,5 @@ __pycache__/
 /venv
 /checkpoint.tsv
 /mare_full_sats
+/satxplor/executables/target/
 *.fasta

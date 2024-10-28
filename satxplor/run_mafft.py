@@ -1,7 +1,8 @@
 import os
 import subprocess
 import multiprocessing
-import utils.constants as constants
+import utils.paths as paths
+from utils.constant_loader import constants as constants
 from logging_config import logger
 
 def run_mafft(input_file, output_file):
@@ -37,12 +38,12 @@ def run_mafft(input_file, output_file):
 
 def main():
     # List of input files for monomer alignment
-    input_files = [file for file in os.listdir(constants.SEQ_SAVE_PATH) if file.endswith("_monomers.fasta")]
+    input_files = [file for file in os.listdir(paths.SEQ_SAVE_PATH) if file.endswith("_monomers.fasta")]
     for input_file in input_files:
         # Construct output file name by adding '_aligned' suffix
         output_file = os.path.splitext(input_file)[0] + '_aligned.fasta'
-        input_path = constants.SEQ_SAVE_PATH + input_file
-        output_path = constants.SEQ_SAVE_PATH + output_file
+        input_path = paths.SEQ_SAVE_PATH + input_file
+        output_path = paths.SEQ_SAVE_PATH + output_file
         
 
         # Run MAFFT for each file
@@ -52,13 +53,13 @@ def main():
         except Exception as e:
             logger.warning(f"Error in mafft for {input_file}, error message: {e}")
         #list of input files for flank alignment
-    input_files = [file for file in os.listdir(constants.FLANKS_SAVE_ROOT) if file.endswith("_flanks.fasta")]
+    input_files = [file for file in os.listdir(paths.FLANKS_SAVE_ROOT) if file.endswith("_flanks.fasta")]
     
     for input_file in input_files:
         # Construct output file name by adding '_aligned' suffix
         output_file = os.path.splitext(input_file)[0] + '_aligned.fasta'
-        input_path = constants.FLANKS_SAVE_ROOT + input_file
-        output_path = constants.FLANKS_SAVE_ROOT + output_file
+        input_path = paths.FLANKS_SAVE_ROOT + input_file
+        output_path = paths.FLANKS_SAVE_ROOT + output_file
     
         # Run MAFFT for each file
         try:
@@ -68,14 +69,13 @@ def main():
             logger.warning(f"Error in mafft for {input_file}, error message: {e}")
     
 
-
-    input_files = [file for file in os.listdir(constants.FLANKS_SAVE_ROOT   ) if file.endswith("_microhomology.fasta")]
+    input_files = [file for file in os.listdir(paths.FLANKS_SAVE_ROOT   ) if file.endswith("_microhomology.fasta")]
     
     for input_file in input_files:
         # Construct output file name by adding '_aligned' suffix
         output_file = os.path.splitext(input_file)[0] + '_aligned.fasta'
-        input_path = constants.FLANKS_SAVE_ROOT + input_file
-        output_path = constants.FLANKS_SAVE_ROOT + output_file
+        input_path = paths.FLANKS_SAVE_ROOT + input_file
+        output_path = paths.FLANKS_SAVE_ROOT + output_file
     
         # Run MAFFT for each file
         try:

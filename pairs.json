@@ -1,8 +1,4 @@
 {
-  "./results/data/sequences/Cast1_monomer_dimers.fasta": "./results/data/sequences/Cast1_extended_arrays.fasta",
-  "./results/data/sequences/Cast2_monomer_dimers.fasta": "./results/data/sequences/Cast2_extended_arrays.fasta",
-  "./results/data/sequences/Cast3_monomer_dimers.fasta": "./results/data/sequences/Cast3_extended_arrays.fasta",
-  "./results/data/sequences/Cast5_monomer_dimers.fasta": "./results/data/sequences/Cast5_extended_arrays.fasta",
-  "./results/data/sequences/Cast6_monomer_dimers.fasta": "./results/data/sequences/Cast6_extended_arrays.fasta",
-  "./results/data/sequences/Cast8_monomer_dimers.fasta": "./results/data/sequences/Cast8_extended_arrays.fasta"
+  "./results/data/sequences/major_monomer_dimers.fasta": "./results/data/sequences/major_extended_arrays.fasta",
+  "./results/data/sequences/minor_monomer_dimers.fasta": "./results/data/sequences/minor_extended_arrays.fasta"
 }

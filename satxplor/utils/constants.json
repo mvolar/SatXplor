@@ -1,0 +1,14 @@
+{
+    "MAX_PLOT_LEN": 2000,
+    "HISTOGRAM_BIN_WIDTH": 50,
+    "NKERNEL_BINS": 100,
+    "FLANK_SIZE": 500,
+    "ARRAY_HOR_PERC": 0.01,
+    "MONOMER_NUMBER": 4,
+    "CONTIG_FILTER": 100000,
+    "DIMENSION_RED_MODE": "both",
+    "PERC_ID_FILTER": 70.0,
+    "QCOVHSP_FILTER": 70.0,
+    "SQUISH": true,
+    "SQUISH_LEN": 2500
+}

@@ -1,7 +1,8 @@
 from Bio import SeqIO
 import argparse
 import utils.utils as utils
-import utils.constants as constants
+import utils.paths as paths
+from utils.constant_loader import constants as constants
 from utils.utils import extract_subsequences
 from logging_config import logger
 import glob
@@ -19,7 +20,7 @@ def extract_monomers(file_path: str, fasta_records: list) -> None:
 
         subsequence_records = extract_subsequences(fasta_records, group_df)
 
-        output_file = constants.SEQ_SAVE_PATH + group_key[0] + "_monomers.fasta"
+        output_file = paths.SEQ_SAVE_PATH + group_key[0] + "_monomers.fasta"
         SeqIO.write(subsequence_records, output_file, 'fasta')
 
 
@@ -35,7 +36,7 @@ def extract_extended_arrays(file_path: str,fasta_records: list) -> None:
         flanks="both",flank_size=500,squish_arrays=constants.SQUISH)
 
 # Write the subsequences to a new FASTA file
-        output_file = constants.SEQ_SAVE_PATH + group_key[0] + "_extended_arrays.fasta"
+        output_file = paths.SEQ_SAVE_PATH + group_key[0] + "_extended_arrays.fasta"
         SeqIO.write(subsequence_records, output_file, 'fasta')
 
 
@@ -43,19 +44,16 @@ def extract_arrays(file_path: str,fasta_records: list) -> None:
     df = utils.read_gff_output(file_path,headers=False)
     grouped = df.group_by(["feature"])
 
-    #extract left flanks
     for group_key,group_df in grouped:
 
-    # Extract subsequences from FASTA records based on polars DataFrame
         subsequence_records = extract_subsequences(fasta_records, group_df,
         flanks="none",flank_size=0)
 
-# Write the subsequences to a new FASTA file
-        output_file = constants.SEQ_SAVE_PATH + group_key[0] + "_nonextended_arrays.fasta"
+        output_file = paths.SEQ_SAVE_PATH + group_key[0] + "_nonextended_arrays.fasta"
         SeqIO.write(subsequence_records, output_file, 'fasta')
     
 def create_monomer_dimers():
-    files = glob.glob(constants.SEQ_SAVE_PATH + "*_monomers.fasta")  # Find all files ending with "_monomers.fasta"
+    files = glob.glob(paths.SEQ_SAVE_PATH + "*_monomers.fasta")  # Find all files ending with "_monomers.fasta"
     
     for file in files:
         output_file = file.replace("_monomers.fasta", "_monomer_dimers.fasta")  # Generate output filename
@@ -80,15 +78,15 @@ if __name__=="__main__":
     fasta_file = args.genome_path
     logger.info("Reading in the genome")
     fasta_records = list(SeqIO.parse(fasta_file, 'fasta'))
-    logger.info(f"Extracting monomers from {constants.BLAST_GFF_PATH}")
-    extract_monomers(constants.BLAST_GFF_PATH,fasta_records)
+    logger.info(f"Extracting monomers from {paths.BLAST_GFF_PATH}")
+    extract_monomers(paths.BLAST_GFF_PATH,fasta_records)
 
-    logger.info(f"Creating monomer-dimers for kmer analysis {constants.BLAST_GFF_PATH}")
+    logger.info(f"Creating monomer-dimers for kmer analysis {paths.BLAST_GFF_PATH}")
     create_monomer_dimers()
 
-    logger.info(f"extracting array sequences from from {constants.ARRAYS_OUT_PATH}")
-    extract_arrays(constants.ARRAYS_OUT_PATH,fasta_records)
+    logger.info(f"extracting array sequences from from {paths.ARRAYS_OUT_PATH}")
+    extract_arrays(paths.ARRAYS_OUT_PATH,fasta_records)
 
-    logger.info(f"extracting array sequences with flanks from from {constants.ARRAYS_OUT_PATH}")
-    extract_extended_arrays(constants.ARRAYS_OUT_PATH,fasta_records)
+    logger.info(f"extracting array sequences with flanks from from {paths.ARRAYS_OUT_PATH}")
+    extract_extended_arrays(paths.ARRAYS_OUT_PATH,fasta_records)
 

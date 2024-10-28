@@ -1,8 +1,8 @@
 {
-    "INPUT_GENOME_PATH": "./testing_data/test_sequence.fasta",
+    "INPUT_GENOME_PATH": "../data_for_testing/mouse.fasta",
     "GENOME_PATH": "./input.fasta",
-	"SAT_RAW": "./testing_data/test_sats.fasta",
+	"SAT_RAW": "../data_for_testing/mouse_sats.fasta",
     "SAT_FASTA_PATH": "./sats.fasta",
-    "FINAL_RESULTS_DIR": "./test_output/",
+    "FINAL_RESULTS_DIR": "./test_output_mouse/",
     "OVERWRITE": true
 }
