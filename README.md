@@ -57,7 +57,7 @@ To simplify usage, we recommend installing SatXplor via Docker. This approach st
 
 1. Pull the Docker containter:
     ```
-    docker pull mvolaric/satxplor
+    docker pull mvolaric/satxplor_v2
     ```
 2. Prepare your data directory - If you don't already have a folder for your input and output data, create one and navigate to it:
     ```
@@ -71,7 +71,7 @@ To simplify usage, we recommend installing SatXplor via Docker. This approach st
 
     <span style="color:#21548d;">Once you enter the interactive shell by running the Docker command, you are effectively working inside a virtualized environment that contains all the necessary tools and libraries for SatXplor. The prompt you see (e.g., `(mypyenv) (myenv) root@54fc34881c6c:~/app#`) indicates that you are logged into this environment.</span>
     ```
-    docker run -it -v path/to/your/data_folder:/mnt/data satxplor
+    docker run -it -v path/to/your/data_folder:/mnt/data satxplor_v2
     ```
 4. Set up the configuration file:
 
@@ -163,7 +163,7 @@ If you prefer to install and run SatXplor manually without Docker, follow the st
 To ensure that SatXplor is functioning correctly within the Docker environment, you can run the following test after pulling the Docker container. This will execute the test and allow you to inspect the output on your directory.
 
 ```
-docker run -it -v path/to/your/data_folder:/mnt/data satxplor   # Run the Docker container and mount your data directory
+docker run -it -v path/to/your/data_folder:/mnt/data satxplor_v2   # Run the Docker container and mount your data directory
 
 python satxplor/run_full_tests.py                               # Execute the test script with test dataset as example
 
