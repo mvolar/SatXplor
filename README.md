@@ -181,7 +181,7 @@ python tests/tests.py
 
 Additionally, SatXplor includes a small testing sample to confirm that everything runs normally and to serve. You can execute the following command, which runs on the `testing_data/testing_data.tar.gz` files, extracting the `test_sequence.fasta` and 'test_sats.fasta', setting up the run settings and running SatXplor all in one command
 ```
-python satxplor/run_all_tests.py
+python satxplor/run_full_tests.py
 ```
 
 ## Usage
