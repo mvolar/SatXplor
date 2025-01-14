@@ -163,7 +163,7 @@ If you prefer to install and run SatXplor manually without Docker, follow the st
 To ensure that SatXplor is functioning correctly within the Docker environment, you can run the following test after pulling the Docker container. This will execute the test and allow you to inspect the output on your directory.
 
 ```
-docker run -it -v path/to/your/data_folder:/mnt/data satxplor_v2   # Run the Docker container and mount your data directory
+docker run -it -v path/to/your/data_folder:/mnt/data mvolaric/satxplor_v2   # Run the Docker container and mount your data directory
 
 python satxplor/run_full_tests.py                               # Execute the test script with test dataset as example
 
