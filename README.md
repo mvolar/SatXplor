@@ -307,7 +307,9 @@ The `pictures/` folder features graphical representations of various analyses - 
 If you use SatXplor please cite the following paper:
 
 ```
-SatXplor – A comprehensive pipeline for satellite DNA analyses in complex genome assemblies
-Marin Volarić, Nevenka Meštrović, Evelin Despot-Slade
-bioRxiv 2024.08.09.607335; doi: https://doi.org/10.1101/2024.08.09.607335
+
+Marin Volarić, Nevenka Meštrović, Evelin Despot-Slade,
+SatXplor—a comprehensive pipeline for satellite DNA analyses in complex genome assemblies,
+Briefings in Bioinformatics, Volume 26, Issue 1, January 2025, bbae660, https://doi.org/10.1093/bib/bbae660
+
 ```
