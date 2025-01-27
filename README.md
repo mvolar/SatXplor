@@ -24,7 +24,7 @@ Satellite DNA Exploration (SatXplor) is a bioinformatics pipeline designed for t
 **- Customizable and versatile:** It can be paired with any satDNA detection tool, allowing for flexible analysis across species with varying satDNA profiles.  
 **- Benchmarking:** SatXplor has been rigorously tested on curated satDNA datasets from diverse species, showcasing its adaptability to genomes with different levels of complexity.  
 **- Advanced Computational Techniques:** By incorporating methods such as sequence analysis, homology investigation, clustering, and graph-based approaches, SatXplor offers unique insight into satDNA organization and evolution.  
-
+**- Standalone satDNA extraction and annotation:** Available at https://github.com/mvolar/SatAnnot
 ## Requirements
 
 **For Docker Installation (Recommended)**
@@ -71,7 +71,7 @@ To simplify usage, we recommend installing SatXplor via Docker. This approach st
 
     <span style="color:#21548d;">Once you enter the interactive shell by running the Docker command, you are effectively working inside a virtualized environment that contains all the necessary tools and libraries for SatXplor. The prompt you see (e.g., `(mypyenv) (myenv) root@54fc34881c6c:~/app#`) indicates that you are logged into this environment.</span>
     ```
-    docker run -it -v path/to/your/data_folder:/mnt/data satxplor_v2
+    docker run -it -v path/to/your/data_folder:/mnt/data mvolaric/satxplor_v2
     ```
 4. Set up the configuration file:
 
