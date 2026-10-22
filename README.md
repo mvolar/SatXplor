@@ -313,6 +313,7 @@ SatXplor—a comprehensive pipeline for satellite DNA analyses in complex genome
 Briefings in Bioinformatics, Volume 26, Issue 1, January 2025, bbae660, https://doi.org/10.1093/bib/bbae660
 
 ```
+Zenodo: https://doi.org/10.5281/zenodo.23544309
 
 ## LICENSE
 
